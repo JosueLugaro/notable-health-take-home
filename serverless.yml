@@ -1,0 +1,43 @@
+service: notable-health-take-home
+
+frameworkVersion: '2'
+
+provider:
+  name: aws
+  runtime: python3.9
+  lambdaHashingVersion: 20201221
+
+functions:
+  hello:
+    handler: handler.hello
+
+  getAllDoctors:
+    handler: handler.getAllDoctors
+    events:
+      - http:
+          path: /physicians
+          method: get
+
+  getDoctorsAppointments:
+    handler: handler.getDoctorsAppointments
+    events:
+      - http:
+          path: /physicians/{physicianId}/appointments/{date}
+          method: get
+
+  deleteAppointment:
+    handler: handler.deleteAppointment
+    events:
+      - http:
+          path: /physicians/{physicianId}/appointments/delete
+          method: delete
+
+  addNewAppointment:
+    handler: handler.addNewAppointment
+    events:
+      - http:
+          path: /physicians/{physicianId}/appointments/new
+          method: post
+
+plugins:
+  - serverless-python-requirements
